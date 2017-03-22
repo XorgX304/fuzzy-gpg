@@ -29,13 +29,15 @@ int main(int argc, char *argv[])
 
     QString password = parser.value(keyOption);
     if (!parser.isSet(keyOption))
-        password = "BbL=t6WcwqUX@r-FAKE-K%67hvVZXS$kyRD7tB";
+        password = "PASSKEY";
 
-    args << "--yes" << "--batch" << "--passphrase="+password
-         << "-c" << parser.positionalArguments()[0];
+    if (parser.isSet(decryptOption))
+        args << "--yes" << "--batch" << "--passphrase="+password << parser.positionalArguments()[0];
+    else
+        args << "--yes" << "--batch" << "--passphrase="+password << "-c" << parser.positionalArguments()[0];
 
     gpg.setArguments(args);
-    gpg.setProgram("gpg1");
+    gpg.setProgram("gpg");
     gpg.start();
     gpg.waitForFinished();
 
